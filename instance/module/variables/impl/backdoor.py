@@ -25,7 +25,6 @@ class Backdoor(Variables):
         super().__init__(from_vars=from_vars, from_file=from_file)
         self._length = len(super().variables())
         self._mask = list_of(1, self._length)
-
         self._var_state = None
 
     def _upd_var_state(self):
@@ -61,7 +60,7 @@ class Backdoor(Variables):
     def get_copy(self, mask: Mask) -> 'Backdoor':
         return Backdoor(
             from_vars=self._vars,
-            from_file=self.filepath,
+            from_file=self.filepath
         )._set_mask(mask)
 
     def pack(self) -> ByteMask:

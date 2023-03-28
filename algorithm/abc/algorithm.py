@@ -66,3 +66,8 @@ class Algorithm:
         return {
             'slug': self.slug,
         }
+
+
+__all__ = [
+    'Algorithm'
+]
