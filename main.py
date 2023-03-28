@@ -53,7 +53,7 @@ if __name__ == '__main__':
         algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=14374),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='4:30:00'),
+        limitation=WallTime(from_string='00:01:00'),
     ).launch()
 
     for point in solution:
