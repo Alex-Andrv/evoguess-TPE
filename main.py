@@ -4,9 +4,9 @@ from algorithm.module.mutation import Doer
 from algorithm.module.crossover import TwoPoint
 from algorithm.module.selection import Roulette
 
-from function.impl import RhoFunction
+from function.impl import RhoFunction, InversePolynomialSets
 from function.module.solver import pysat
-from function.module.measure import Propagations
+from function.module.measure import Propagations, SolvingTime
 
 from instance.impl import Instance
 from instance.module.encoding import CNF
@@ -38,10 +38,9 @@ if __name__ == '__main__':
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
-        function=RhoFunction(
-            penalty_power=2 ** 40,
-            measure=Propagations(),
-            solver=pysat.Glucose3()
+        function=InversePolynomialSets(
+            solver=pysat.Glucose3(),
+            measure=Propagations()
         ),
         # algorithm=Elitism(
         #     elites_count=2,
