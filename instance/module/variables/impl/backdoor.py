@@ -21,12 +21,16 @@ ByteMask = bytes
 class Backdoor(Variables):
     slug = 'variables:backdoor'
 
-    def __init__(self, from_file: str = None, from_vars: List[Var] = None):
+    def __init__(self, from_file: str = None, from_vars: List[Var] = None, trial_number=None):
         super().__init__(from_vars=from_vars, from_file=from_file)
         self._length = len(super().variables())
         self._mask = list_of(1, self._length)
-
+        self.trial_number = trial_number
         self._var_state = None
+
+    def set_trial_number(self, trial_number: int):
+        # only for TreeStructuredParzen algorithm
+        self.trial_number = trial_number
 
     def _upd_var_state(self):
         _variables = super().variables()
@@ -62,6 +66,7 @@ class Backdoor(Variables):
         return Backdoor(
             from_vars=self._vars,
             from_file=self.filepath,
+            trial_number=self.trial_number
         )._set_mask(mask)
 
     def pack(self) -> ByteMask:
