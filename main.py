@@ -1,4 +1,5 @@
 from algorithm.impl import Elitism
+from algorithm.impl.tree_structured_parzen import TreeStructuredParzen
 from algorithm.module.mutation import Doer
 from algorithm.module.crossover import TwoPoint
 from algorithm.module.selection import Roulette
@@ -42,14 +43,15 @@ if __name__ == '__main__':
             measure=Propagations(),
             solver=pysat.Glucose3()
         ),
-        algorithm=Elitism(
-            elites_count=2,
-            population_size=6,
-            mutation=Doer(),
-            crossover=TwoPoint(),
-            selection=Roulette(),
-            min_update_size=6
-        ),
+        # algorithm=Elitism(
+        #     elites_count=2,
+        #     population_size=6,
+        #     mutation=Doer(),
+        #     crossover=TwoPoint(),
+        #     selection=Roulette(),
+        #     min_update_size=6
+        # ),
+        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=150),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
         limitation=WallTime(from_string='00:30:00'),
