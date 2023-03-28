@@ -51,7 +51,7 @@ if __name__ == '__main__':
         #     selection=Roulette(),
         #     min_update_size=6
         # ),
-        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=150),
+        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=14374),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
         limitation=WallTime(from_string='03:30:00'),
