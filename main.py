@@ -25,21 +25,21 @@ from core.module.comparator import MinValueMaxSize
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('sgen_150.cnf')
+    cnf_file = data_path.to_file('a5_1_64_1.cnf')
 
     logs_path = root_path.to_path('logs', 'test')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=150)
+            variables=Interval(start=1, length=14374)
         ),
-        executor=ProcessExecutor(max_workers=16),
+        executor=ProcessExecutor(max_workers=32),
         sampling=Const(size=16384, split_into=4096),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
         function=RhoFunction(
-            penalty_power=2 ** 10,
+            penalty_power=2 ** 40,
             measure=Propagations(),
             solver=pysat.Glucose3()
         ),
@@ -54,7 +54,7 @@ if __name__ == '__main__':
         algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=150),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='00:30:00'),
+        limitation=WallTime(from_string='03:30:00'),
     ).launch()
 
     for point in solution:
