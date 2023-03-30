@@ -25,7 +25,7 @@ class TreeStructuredParzen(Algorithm):
         random.shuffle(mask)
         return mask
 
-    def __init__(self, min_update_size: int, max_backdoor_mask_len: int, n_startup_trials: int = 5, top_n: int = 100,
+    def __init__(self, min_update_size: int, max_backdoor_mask_len: int, n_startup_trials: int = 1000, top_n: int = 100,
                  max_cnt_var: int = 30, max_queue_size: Int = None):
         super().__init__(min_update_size, max_queue_size)
         self.max_backdoor_mask_len = max_backdoor_mask_len
