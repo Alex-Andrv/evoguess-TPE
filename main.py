@@ -23,7 +23,7 @@ if __name__ == '__main__':
     solution = Optimize(
         space=InputSet(),
         executor=ProcessExecutor(max_workers=32),
-        sampling=Const(size=50, split_into=10),
+        sampling=Const(size=100, split_into=20),
         instance=StreamCipher(
             encoding=CNF(from_file=cnf_file),
             input_set=Interval(start=1, length=64),
@@ -33,7 +33,8 @@ if __name__ == '__main__':
             measure=SolvingTime(budget=60),
             solver=pysat.Glucose3()
         ),
-        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=64),
+        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=64, min_cnt_var=40,
+                                       max_cnt_var=55, n_startup_trials=1000),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
         limitation=WallTime(from_string='00:11:00'),
