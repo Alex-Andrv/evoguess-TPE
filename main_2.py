@@ -36,7 +36,7 @@ if __name__ == '__main__':
             encoding=CNF(from_file=cnf_file)
         ),
         function=RhoFunction(
-            penalty_power=2 ** 30,
+            penalty_power=2 ** 40,
             measure=Propagations(),
             solver=pysat.Glucose3()
         ),
@@ -48,7 +48,8 @@ if __name__ == '__main__':
         #     selection=Roulette(),
         #     min_update_size=6
         # ),
-        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=500),
+        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=500, min_cnt_var=20,
+                                       max_cnt_var=40, n_startup_trials=1000),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
         limitation=WallTime(from_string='08:00:00'),

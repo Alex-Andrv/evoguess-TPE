@@ -25,8 +25,8 @@ class TreeStructuredParzen(Algorithm):
         random.shuffle(mask)
         return mask
 
-    def __init__(self, min_update_size: int, max_backdoor_mask_len: int, n_startup_trials: int = 10, top_n: int = 100,
-                 max_cnt_var: int = 40, max_queue_size: Int = None):
+    def __init__(self, min_update_size: int, max_backdoor_mask_len: int, n_startup_trials: int = 10, top_n: int = 100, min_cnt_var=40,
+                 max_cnt_var: int = 64, max_queue_size: Int = None):
         super().__init__(min_update_size, max_queue_size)
         self.max_backdoor_mask_len = max_backdoor_mask_len
         # название так себе, возможно стоит использовать SearchSet TODO remove comment
@@ -39,8 +39,8 @@ class TreeStructuredParzen(Algorithm):
         self.max_cnt_var = max_cnt_var
         self.collision = 0
         for n_startup in range(n_startup_trials):
-            assert max_cnt_var < max_backdoor_mask_len
-            cnt_var_in_backdoor = random.randint(1, max_cnt_var)
+            assert max_cnt_var <= max_backdoor_mask_len
+            cnt_var_in_backdoor = random.randint(min_cnt_var, max_cnt_var)
             mask = self.get_mask(cnt_var_in_backdoor, max_backdoor_mask_len)
             self.study.enqueue_trial(skip_if_exists=True, params={f'x{i}': mask[i] for i in range(len(mask))})
 
