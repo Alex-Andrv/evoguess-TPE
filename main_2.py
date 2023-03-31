@@ -11,7 +11,7 @@ from core.module.space import InputSet, SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import InverseBackdoorSets, RhoFunction
 from function.module.measure import SolvingTime, Propagations
-from function.module.solver import pysat
+from function.module.solver import pysat, Kissat
 from instance import Instance
 from instance.impl import StreamCipher
 from instance.module.encoding import CNF
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         function=RhoFunction(
             penalty_power=2 ** 40,
             measure=Propagations(),
-            solver=pysat.Glucose3()
+            solver=Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")
         ),
         # algorithm=Elitism(
         #     elites_count=2,
