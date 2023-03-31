@@ -23,14 +23,14 @@ if __name__ == '__main__':
     solution = Optimize(
         space=InputSet(),
         executor=ProcessExecutor(max_workers=32),
-        sampling=Const(size=1000, split_into=200),
+        sampling=Const(size=50, split_into=10),
         instance=StreamCipher(
             encoding=CNF(from_file=cnf_file),
             input_set=Interval(start=1, length=64),
             output_set=Interval(start=14375, length=64)
         ),
         function=InverseBackdoorSets(
-            measure=SolvingTime(budget=500),
+            measure=SolvingTime(budget=60),
             solver=pysat.Glucose3()
         ),
         algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=64),
