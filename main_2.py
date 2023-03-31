@@ -52,7 +52,7 @@ if __name__ == '__main__':
                                        max_cnt_var=40, n_startup_trials=1000),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='08:00:00'),
+        limitation=WallTime(from_string='18:30:00'),
     ).launch()
 
     for point in solution:
