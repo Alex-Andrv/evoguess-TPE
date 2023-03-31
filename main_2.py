@@ -11,7 +11,7 @@ from core.module.space import InputSet, SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import InverseBackdoorSets, RhoFunction
 from function.module.measure import SolvingTime, Propagations
-from function.module.solver import pysat, Kissat
+from function.module.solver import pysat
 from instance import Instance
 from instance.impl import StreamCipher
 from instance.module.encoding import CNF
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         function=RhoFunction(
             penalty_power=2 ** 40,
             measure=Propagations(),
-            solver=Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")
+            solver=pysat.Glucose3()
         ),
         # algorithm=Elitism(
         #     elites_count=2,
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         #     min_update_size=6
         # ),
         algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=500, min_cnt_var=20,
-                                       max_cnt_var=40, n_startup_trials=1000),
+                                       max_cnt_var=40, n_startup_trials=1),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
         limitation=WallTime(from_string='18:30:00'),

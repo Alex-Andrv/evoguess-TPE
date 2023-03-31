@@ -7,7 +7,7 @@ from core.module.space import InputSet
 from executor.impl import ProcessExecutor
 from function.impl import InverseBackdoorSets
 from function.module.measure import SolvingTime
-from function.module.solver import pysat
+from function.module.solver import pysat, Kissat
 from instance.impl import StreamCipher
 from instance.module.encoding import CNF
 from instance.module.variables import Interval
@@ -31,7 +31,7 @@ if __name__ == '__main__':
         ),
         function=InverseBackdoorSets(
             measure=SolvingTime(budget=60),
-            solver=pysat.Glucose3()
+            solver=Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")
         ),
         algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=64, min_cnt_var=40,
                                        max_cnt_var=55, n_startup_trials=1000),
