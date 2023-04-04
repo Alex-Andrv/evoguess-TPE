@@ -1,15 +1,18 @@
-from algorithm.impl.tree_structured_parzen import TreeStructuredParzen
+from algorithm.impl import Elitism
+from algorithm.module.crossover import TwoPoint
+from algorithm.module.mutation import Doer
+from algorithm.module.selection import Roulette
 from core.impl import Optimize
 from core.module.comparator import MinValueMaxSize
 from core.module.limitation import WallTime
 from core.module.sampling import Const
-from core.module.space import InputSet
+from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
-from function.impl import InverseBackdoorSets
+from function.impl import RhoFunction
 from function.module.measure import SolvingTime
-from function.module.solver import pysat, Kissat
-from instance.impl import StreamCipher
-from instance.module.encoding import CNF
+from function.module.solver.impl.scip import Scip
+from instance.impl import Instance
+from instance.module.encoding.impl.PB import PB
 from instance.module.variables import Interval
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
@@ -17,27 +20,35 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('a5_1_64.cnf')
+    cnf_file = data_path.to_file('WvC.opb')
 
     logs_path = root_path.to_path('logs', 'test')
     solution = Optimize(
-        space=InputSet(),
-        executor=ProcessExecutor(max_workers=32),
-        sampling=Const(size=100, split_into=20),
-        instance=StreamCipher(
-            encoding=CNF(from_file=cnf_file),
-            input_set=Interval(start=1, length=64),
-            output_set=Interval(start=14375, length=64)
+        space=SearchSet(
+            by_mask=[],
+            variables=Interval(start=1, length=3049)
         ),
-        function=InverseBackdoorSets(
-            measure=SolvingTime(budget=60),
-            solver=Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")
+        executor=ProcessExecutor(max_workers=8),
+        sampling=Const(size=1024, split_into=256),
+        instance=Instance(
+            encoding=PB(from_file=cnf_file)
         ),
-        algorithm=TreeStructuredParzen(min_update_size=6, max_backdoor_mask_len=64, min_cnt_var=40,
-                                       max_cnt_var=55, n_startup_trials=1000),
+        function=RhoFunction(
+            penalty_power=2 ** 10,
+            measure=SolvingTime(),
+            solver=Scip()
+        ),
+        algorithm=Elitism(
+            elites_count=2,
+            population_size=6,
+            mutation=Doer(),
+            crossover=TwoPoint(),
+            selection=Roulette(),
+            min_update_size=6
+        ),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='18:30:00'),
+        limitation=WallTime(from_string='05:30:00'),
     ).launch()
 
     for point in solution:
