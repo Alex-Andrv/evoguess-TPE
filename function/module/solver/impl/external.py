@@ -1,17 +1,15 @@
 import os
 import re
-
-from time import time as now
-from tempfile import NamedTemporaryFile as NTFile
 from subprocess import Popen, TimeoutExpired, PIPE
-
-from instance.module.encoding.impl.PBSCIP import PBData
-from util.iterable import concat
-from ..solver import Report, Solver, IncrSolver
+from tempfile import NamedTemporaryFile as NTFile
+from time import time as now
 
 from function.module.measure import Measure
 from instance.module.encoding import EncodingData, CNFData
+from instance.module.encoding.impl.PBSCIP import PBData
 from instance.module.variables.vars import Constraints, Supplements, Assumptions
+from util.iterable import concat
+from ..solver import Report, Solver, IncrSolver
 
 STATUSES = {
     10: True,
