@@ -1,14 +1,15 @@
+from pyscipopt.scip import Model
+
 from function.module.measure import Measure
 from function.module.solver import Solver, Report, IncrSolver
 from instance.module.encoding import EncodingData
-from instance.module.encoding.impl.PB import PBData
+from instance.module.encoding.impl.PBSCIP import PBSCIPData
 from instance.module.variables.vars import Supplements, Constraints, Assumptions
-from pyscipopt.scip import Model
 
 
 def propagate(measure, encoding_data: EncodingData, assumptions):
-    if not isinstance(encoding_data, PBData):
-        raise TypeError('SCIP works only with PB encodings')
+    if not isinstance(encoding_data, PBSCIPData):
+        raise TypeError('SCIP works only with PBSCIP encodings')
 
     model = Model(sourceModel=encoding_data.get_model(), threadsafe=False)
 
@@ -63,8 +64,8 @@ class Scip(Solver):
                   supplements: Supplements, add_model: bool) -> Report:
         assert measure.key == "time", "support only time"
         assert add_model == False
-        if not isinstance(encoding_data, PBData):
-            raise TypeError('SCIP works only with PB encodings')
+        if not isinstance(encoding_data, PBSCIPData):
+            raise TypeError('SCIP works only with PBSCIP encodings')
 
         assumptions, _ = supplements
         return propagate(measure, encoding_data, assumptions)

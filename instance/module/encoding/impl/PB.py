@@ -1,11 +1,8 @@
 from threading import Lock
 from typing import List, Tuple, Dict, Any
 
-from pyscipopt.scip import Model, PY_SCIP_PARAMSETTING
-
+from instance.module.variables.vars import Supplements
 from ..encoding import Encoding, EncodingData
-
-from instance.module.variables.vars import Constraints, Supplements
 
 Coef = int
 Lit = int
@@ -22,31 +19,6 @@ class PBData(EncodingData):
         self._lines = lines
         self._pb_constraints = pb_constraints
         self._max_lit = max_lit
-
-        model = Model()
-
-        model.hideOutput()
-        model.setParam('display/verblevel', 0)
-
-        variables = dict()
-
-        for pb_constraint in self._pb_constraints:
-            terms, b = pb_constraint
-            line = -b
-            for term in terms:
-                if not term[1] in variables:
-                    variables[term[1]] = model.addVar(vtype="B", name="x"+str(term[1]), lb=0, ub=1)
-                line += term[0] * variables[term[1]]
-            model.addCons(line >= 0)
-
-        model.setPresolve(PY_SCIP_PARAMSETTING.AGGRESSIVE)
-        model.presolve()
-        model.setPresolve(PY_SCIP_PARAMSETTING.DEFAULT)
-
-        self.model = model
-
-    def get_model(self):
-        return self.model
 
     def pb_constraints(self) -> PBConstraints:
         return self._pb_constraints
@@ -65,15 +37,14 @@ class PBData(EncodingData):
         return f'* #variable={max_lit} #constraint={len(self._pb_constraints) + payload_len}\n'
 
     def source(self, supplements: Supplements = ((), ())) -> str:
-        raise NotImplementedError
-        # assumptions, constraints = supplements
-        # lines, max_lit = self._get_lines_and_max_lit()
-        # payload_len = len(constraints) + len(assumptions)
-        # return ''.join([ # todo что страшное и неработает тут
-        #     self._get_source_header(payload_len),
-        #     lines, *(f'{x} 0\n' for x in assumptions),
-        #     *(' '.join(map(lambda c: "1 " + str(), c)) + ' >= 1\n' for c in constraints),
-        # ])
+        assumptions, constraints = supplements
+        assert constraints == [], "constraints should be empty"
+        lines, max_lit = self._get_lines_and_max_lit()
+        payload_len = len(constraints) + len(assumptions)
+        return ''.join([
+            self._get_source_header(payload_len),
+            lines, *(f'1 {x} >= 1;\n' if x > 0 else f'-1 {abs(x)} >= 0;\n' for x in assumptions)
+        ])
 
     @property
     def max_literal(self) -> int:
