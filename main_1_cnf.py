@@ -11,10 +11,8 @@ from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
 from function.module.measure import SolvingTime
 from function.module.solver.impl import Glucose3
-from function.module.solver.impl.scip import Scip
 from instance.impl import Instance
 from instance.module.encoding import CNF
-from instance.module.encoding.impl.PBSCIP import PB
 from instance.module.variables import Interval
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath

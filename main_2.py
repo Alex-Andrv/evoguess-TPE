@@ -11,7 +11,6 @@ from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
 from function.module.measure import SolvingTime
 from function.module.solver.impl import MiniSatPB
-from function.module.solver.impl.scip import Scip
 from instance.impl import Instance
 from instance.module.encoding.impl.PBSCIP import PB
 from instance.module.variables import Interval
