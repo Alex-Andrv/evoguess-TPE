@@ -1,9 +1,10 @@
+from pyscipopt.scip import Model
+
 from function.module.measure import Measure
 from function.module.solver import Solver, Report, IncrSolver
 from instance.module.encoding import EncodingData
 from instance.module.encoding.impl.PBSCIP import PBSCIPData
 from instance.module.variables.vars import Supplements, Constraints, Assumptions
-from pyscipopt.scip import Model
 
 
 def propagate(measure, encoding_data: EncodingData, assumptions):

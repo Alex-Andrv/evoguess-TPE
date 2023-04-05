@@ -1,12 +1,9 @@
 from threading import Lock
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple
 
 from pyscipopt.scip import Model, PY_SCIP_PARAMSETTING
 
 from .PB import PB, PBData
-from ..encoding import Encoding, EncodingData
-
-from instance.module.variables.vars import Constraints, Supplements
 
 Coef = int
 Lit = int
