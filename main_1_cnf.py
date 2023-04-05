@@ -14,7 +14,7 @@ from function.module.solver.impl import Glucose3
 from function.module.solver.impl.scip import Scip
 from instance.impl import Instance
 from instance.module.encoding import CNF
-from instance.module.encoding.impl.PB import PB
+from instance.module.encoding.impl.PBSCIP import PB
 from instance.module.variables import Interval
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
@@ -30,7 +30,7 @@ if __name__ == '__main__':
             by_mask=[],
             variables=Interval(start=1, length=3049)
         ),
-        executor=ProcessExecutor(max_workers=2),
+        executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=1024, split_into=256),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
         ),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='03:30:00'),
+        limitation=WallTime(from_string='09:30:00'),
     ).launch()
 
     for point in solution:

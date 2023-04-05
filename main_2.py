@@ -10,9 +10,10 @@ from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
 from function.module.measure import SolvingTime
+from function.module.solver.impl import MiniSatPB
 from function.module.solver.impl.scip import Scip
 from instance.impl import Instance
-from instance.module.encoding.impl.PB import PB
+from instance.module.encoding.impl.PBSCIP import PB
 from instance.module.variables import Interval
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
@@ -28,7 +29,7 @@ if __name__ == '__main__':
             by_mask=[],
             variables=Interval(start=1, length=5088)
         ),
-        executor=ProcessExecutor(max_workers=8),
+        executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=1024, split_into=256),
         instance=Instance(
             encoding=PB(from_file=cnf_file)
@@ -36,7 +37,7 @@ if __name__ == '__main__':
         function=RhoFunction(
             penalty_power=2 ** 10,
             measure=SolvingTime(),
-            solver=Scip()
+            solver=MiniSatPB("/Users/alexanderandreev/CLionProjects/minisat_latest/cmake-build-debug/minisat")
         ),
         algorithm=Elitism(
             elites_count=2,
@@ -48,7 +49,7 @@ if __name__ == '__main__':
         ),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),
-        limitation=WallTime(from_string='05:30:00'),
+        limitation=WallTime(from_string='09:30:00'),
     ).launch()
 
     for point in solution:
