@@ -15,9 +15,10 @@ from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
 from executor.impl import ProcessExecutor
 
+
 if __name__ == '__main__':
     str_backdoors = [
-        '2 111 749 2237 2612 2864'
+        '279 1280 1465 1828 1858 2220'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
