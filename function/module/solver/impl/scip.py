@@ -13,13 +13,13 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
 
     model = Model(sourceModel=encoding_data.get_model(), origcopy=True, threadsafe=False)
 
-    assert len(model.getVars()) == encoding_data.max_literal
+    assert len(model.getVars()) == encoding_data.max_literal, "len(model.getVars()) != encoding_data.max_literal"
 
     for var_assumption in assumptions:
         var_index = abs(var_assumption) - 1
-        assert var_index > 0
+        assert var_index > 0, "var_index may be 0"
         variable = model.getVars()[var_index]
-        assert variable.name == str(var_index + 1)
+        assert variable.name == str(var_index + 1), "variable.name != str(var_index + 1)"
         if var_assumption > 0:
             model.addCons(variable == 1)
         else:
