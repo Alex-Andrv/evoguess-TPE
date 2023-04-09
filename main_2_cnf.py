@@ -20,13 +20,13 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('WvK.cnf')
+    cnf_file = data_path.to_file('SvP_9_4.cnf')
 
     logs_path = root_path.to_path('logs', 'test')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=5088)
+            variables=Interval(start=1, length=9689)
         ),
         executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=1024, split_into=256),
@@ -34,7 +34,7 @@ if __name__ == '__main__':
             encoding=CNF(from_file=cnf_file)
         ),
         function=RhoFunction(
-            penalty_power=2 ** 10,
+            penalty_power=2 ** 20,
             measure=SolvingTime(),
             solver=Glucose3()
         ),

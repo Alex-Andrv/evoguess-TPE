@@ -21,24 +21,26 @@ class PBSCIPData(PBData):
 
         model = Model()
 
+        assert max_lit != None
+
+        for lit in range(1, max_lit + 1):
+            model.addVar(vtype='B', name=str(lit))
+
         model.hideOutput()
         model.setParam('display/verblevel', 0)
-
-        variables = dict()
 
         for pb_constraint in self._pb_constraints:
             terms, b = pb_constraint
             line = -b
             for term in terms:
-                if not term[1] in variables:
-                    variables[term[1]] = model.addVar(vtype="B", name="x"+str(term[1]), lb=0, ub=1)
-                line += term[0] * variables[term[1]]
+                var = model.getVars()[term[1] - 1]
+                line += term[0] * var
             model.addCons(line >= 0)
 
         model.setPresolve(PY_SCIP_PARAMSETTING.AGGRESSIVE)
         model.presolve()
-        model.setPresolve(PY_SCIP_PARAMSETTING.DEFAULT)
-
+        model.setPresolve(PY_SCIP_PARAMSETTING.FAST)
+        assert len(model.getVars()) == max_lit, "presolver shrink vars"
         self.model = model
 
     def get_model(self):
@@ -47,6 +49,41 @@ class PBSCIPData(PBData):
 
 class PBSCIP(PB):
     slug = 'encoding:pb:PBSCIP'
+
+    def _parse_raw_data(self, raw_data: str):
+        process_line = 1
+        try:
+            lines, pb_constraints, max_lit = [], [], 0
+            for line in raw_data.splitlines(keepends=True):
+                if line[0] not in self.comment_lead:
+                    words = line.split()
+                    pb_constraint = self.parse_line_opb(words)
+                    max_lit = max(max_lit, self.get_max_lit(pb_constraint))
+                    pb_constraints.append(pb_constraint)
+                    lines.append(line)
+                process_line += 1
+
+            pb_data[self.filepath] = PBSCIPData(
+                pb_constraints, ''.join(lines), max_lit
+            )
+        except Exception as exc:
+            msg = f'Error while parsing encoding file in line {process_line}'
+            raise ValueError(msg) from exc
+
+    def get_data(self) -> PBSCIPData:
+        if self.pb_constraints:
+            return PBSCIPData(self.pb_constraints)
+        elif self.filepath in pb_data:
+            return pb_data[self.filepath]
+
+        self._process_raw_data()
+        return pb_data[self.filepath]
+
+    def __copy__(self):
+        return PBSCIP(
+            from_file=self.filepath,
+            from_pb_constraints=self.pb_constraints
+        )
 
 
 __all__ = [

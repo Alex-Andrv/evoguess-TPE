@@ -43,7 +43,7 @@ class PBData(EncodingData):
         payload_len = len(constraints) + len(assumptions)
         return ''.join([
             self._get_source_header(payload_len),
-            lines, *(f'1 {x} >= 1;\n' if x > 0 else f'-1 {abs(x)} >= 0;\n' for x in assumptions)
+            lines, *(f'1 x{x} >= 1;\n' if x > 0 else f'-1 x{abs(x)} >= 0;\n' for x in assumptions)
         ])
 
     @property

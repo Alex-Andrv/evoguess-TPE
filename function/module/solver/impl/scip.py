@@ -11,12 +11,15 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
     if not isinstance(encoding_data, PBSCIPData):
         raise TypeError('SCIP works only with PBSCIP encodings')
 
-    model = Model(sourceModel=encoding_data.get_model(), threadsafe=False)
+    model = Model(sourceModel=encoding_data.get_model(), origcopy=True, threadsafe=False)
+
+    assert len(model.getVars()) == encoding_data.max_literal
 
     for var_assumption in assumptions:
         var_index = abs(var_assumption) - 1
+        assert var_index > 0
         variable = model.getVars()[var_index]
-
+        assert variable.name == str(var_index + 1)
         if var_assumption > 0:
             model.addCons(variable == 1)
         else:

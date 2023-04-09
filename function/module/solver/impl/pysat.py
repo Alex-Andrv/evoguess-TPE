@@ -119,7 +119,7 @@ class IncrPySAT(IncrSolver):
             self.solver = None
 
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
-        return self._fix(solve(self.solver, self.measure, assumptions, add_model))
+        return self.propagate(assumptions, add_model)
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return self._fix(propagate(
