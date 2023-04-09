@@ -21,24 +21,26 @@ class PBSCIPData(PBData):
 
         model = Model()
 
+        assert max_lit != None
+
+        for lit in range(1, max_lit + 1):
+            model.addVar(vtype='B', name=str(lit))
+
         model.hideOutput()
         model.setParam('display/verblevel', 0)
-
-        variables = dict()
 
         for pb_constraint in self._pb_constraints:
             terms, b = pb_constraint
             line = -b
             for term in terms:
-                if not term[1] in variables:
-                    variables[term[1]] = model.addVar(vtype="B", name="x" + str(term[1]), lb=0, ub=1)
-                line += term[0] * variables[term[1]]
+                var = model.getVars()[term[1] - 1]
+                line += term[0] * var
             model.addCons(line >= 0)
 
         model.setPresolve(PY_SCIP_PARAMSETTING.AGGRESSIVE)
         model.presolve()
         model.setPresolve(PY_SCIP_PARAMSETTING.FAST)
-
+        assert len(model.getVars()) == max_lit, "presolver shrink vars"
         self.model = model
 
     def get_model(self):
