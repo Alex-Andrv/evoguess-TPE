@@ -135,7 +135,7 @@ class IncrMiniSatPB(IncrSolver):
         pass
 
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
-        return self.solver.solve(self.encoding_data, self.measure, (assumptions, []), False)
+        return self.solver.propagate(self.encoding_data, self.measure, (assumptions, []), False)
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return self.solver.propagate(self.encoding_data, self.measure, (assumptions, []), False)
@@ -164,6 +164,10 @@ class MiniSatPB(External):
         'propagations': re.compile(r'^propagations\s+:\s+(\d+)', re.MULTILINE),
         'learned_literals': re.compile(r'^conflict literals\s+:\s+(\d+)', re.MULTILINE),
     }
+
+    def solve(self, encoding_data: EncodingData, measure: Measure,
+              supplements: Supplements, add_model: bool = True) -> Report:
+        return self.propagate(encoding_data, measure, supplements, add_model)
 
     def propagate(self, encoding_data: EncodingData, measure: Measure,
                   supplements: Supplements, add_model: bool = True) -> Report:
@@ -217,6 +221,7 @@ class MiniSatPB(External):
                 stats[key] = result and int(result.group(1))
 
             status = self.STATUSES_MINISATPB.get(process.returncode)
+            assert status != None, 'status can\'t be null'
             # solution = concat(*[
             #     [int(var) for var in line.split()]
             #     for line in self.solution.findall(output)
@@ -227,7 +232,7 @@ class MiniSatPB(External):
             stats = {'time': now() - timestamp}
         finally:
             [os.remove(file) for file in files]
-
+        assert status != None
         # print(len(supplements[0]), status, stats['time'])
         value, status = measure.check_and_get(stats, status)
         return Report(stats['time'], value, status, None)

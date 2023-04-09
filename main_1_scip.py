@@ -11,8 +11,9 @@ from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
 from function.module.measure import SolvingTime
 from function.module.solver.impl import MiniSatPB
+from function.module.solver.impl.scip import Scip
 from instance.impl import Instance
-from instance.module.encoding.impl.PBSCIP import PB
+from instance.module.encoding.impl.PBSCIP import PB, PBSCIP
 from instance.module.variables import Interval
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
@@ -20,23 +21,23 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('BvP_7_4_min_new.opb')
+    cnf_file = data_path.to_file('PvS_8_4_min_new.opb')
 
     logs_path = root_path.to_path('logs', 'test')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=3492)
+            variables=Interval(start=1, length=6885)
         ),
         executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=256, split_into=64),
         instance=Instance(
-            encoding=PB(from_file=cnf_file)
+            encoding=PBSCIP(from_file=cnf_file)
         ),
         function=RhoFunction(
-            penalty_power=2 ** 10,
+            penalty_power=2 ** 20,
             measure=SolvingTime(),
-            solver=MiniSatPB("/Users/alexanderandreev/CLionProjects/minisat_latest/cmake-build-debug/minisat")
+            solver=Scip()
         ),
         algorithm=Elitism(
             elites_count=2,

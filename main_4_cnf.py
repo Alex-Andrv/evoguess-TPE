@@ -20,16 +20,16 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('KvC.cnf')
+    cnf_file = data_path.to_file('WvC_q.cnf')
 
     logs_path = root_path.to_path('logs', 'test')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=5090)
+            variables=Interval(start=1, length=3049)
         ),
         executor=ProcessExecutor(max_workers=4),
-        sampling=Const(size=1024, split_into=256),
+        sampling=Const(size=4096, split_into=512),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
