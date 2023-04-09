@@ -23,7 +23,7 @@ if __name__ == '__main__':
     data_path = root_path.to_path('data')
     cnf_file = data_path.to_file('PvS_8_4_min_new.opb')
 
-    logs_path = root_path.to_path('logs', 'test')
+    logs_path = root_path.to_path('logs', 'PvS_8_4')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
