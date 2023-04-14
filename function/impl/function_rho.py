@@ -24,7 +24,6 @@ def rho_worker_fn(args: WorkerArgs, payload: Payload) -> WorkerResult:
             time, value, status, _ = incremental.propagate(assumptions, add_model=False)
 
             times[status.value] = times.get(status.value, 0.) + time
-            values[status.value] = values.get(status.value, 0.) + value
             statuses[status.value] = statuses.get(status.value, 0) + 1
     return getpid(), now() - timestamp, times, values, statuses, args
 

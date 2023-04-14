@@ -171,7 +171,7 @@ class MiniSatPB(External):
 
     def propagate(self, encoding_data: EncodingData, measure: Measure,
                   supplements: Supplements, add_model: bool = True) -> Report:
-        assert measure.key == "time", "only time support"
+        # assert measure.key == "time", "only time support"
 
         timeout, files, launch_args = None, [], [self.from_executable]
 

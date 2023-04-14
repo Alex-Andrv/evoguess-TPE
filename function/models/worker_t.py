@@ -36,7 +36,7 @@ ProcessId = int
 ProcessTime = float
 
 TimeMap = Dict[Status, float]
-ValueMap = Dict[Status, float]
+ValueMap = Dict[Status, list[int]]
 StatusMap = Dict[Status, int]
 
 WorkerResult = Tuple[

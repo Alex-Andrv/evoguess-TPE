@@ -9,7 +9,8 @@ from core.module.sampling import Const
 from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
-from function.module.measure import SolvingTime
+from function.impl.function_cr import ChainReaction
+from function.module.measure import SolvingTime, Propagations
 from function.module.solver.impl import Glucose3, Minisat22
 from instance.impl import Instance
 from instance.module.encoding import CNF
@@ -20,27 +21,26 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('PvS_8_4.cnf')
+    cnf_file = data_path.to_file('BvP_6_4.cnf')
 
-    logs_path = root_path.to_path('logs', 'PvS_8_4')
+    logs_path = root_path.to_path('logs', 'BvP_6_4')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=6885)
+            variables=Interval(start=1, length=2276)
         ),
         executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=1024, split_into=256),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
-        function=RhoFunction(
-            penalty_power=2 ** 20,
-            measure=SolvingTime(),
-            solver=Minisat22()
+        function=ChainReaction(
+            measure=Propagations(),
+            solver=Glucose3()
         ),
         algorithm=Elitism(
             elites_count=2,
-            population_size=6,
+            population_size=10,
             mutation=Doer(),
             crossover=TwoPoint(),
             selection=Roulette(),
@@ -53,3 +53,13 @@ if __name__ == '__main__':
 
     for point in solution:
         print(point)
+
+
+# [159 257 261 341 1240 2411 3579 3781 3807 4380 4645 5365 6033](13) by 12256
+# [159 257 261 341 1240 2411 3579 3781 3807 4380 4645 5365 6033](13) by 12256
+# [159 200 257 261 341 1240 2411 3579 3781 3807 4380 4645 5365 6033](14) by 24448
+# [159 257 261 341 447 1240 2411 3579 3781 3807 4380 4645 5144 5365 6033](15) by 44672
+# [159 257 261 341 1240 2242 2319 2411 3579 3781 3807 4380 4645 5365 6033](15) by 47648
+# [159 257 261 341 1240 1535 2411 3579 3781 3807 4291 4380 4645 5365 6033 6045](16) by 84736
+# [159 257 261 341 929 973 1240 1586 2411 3579 3781 3807 4380 4645 4855 5365 6033](17) by 140928
+# [159 257 261 341 1240 2351 2411 3234 3387 3579 3781 3807 4380 4645 5365 6033 6544](17) by 143616

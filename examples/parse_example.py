@@ -3,9 +3,9 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     root_path = WorkPath('examples')
-    logs_path = root_path.to_path('logs', 'test')
+    logs_path = root_path.to_path('logs', 'WvC')
 
-    log_dir = '2023.04.10-00:26:10_?'
+    log_dir = '2023.04.14-01:17:40_?'
     # log_dir = '2023.03.31-21:27:12_?'
 
     log_path = logs_path.to_path(log_dir)

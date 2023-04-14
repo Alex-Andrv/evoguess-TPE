@@ -119,7 +119,20 @@ class IncrPySAT(IncrSolver):
             self.solver = None
 
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
-        return self.propagate(assumptions, add_model)
+        from .. import Kissat
+        print("solve: " + str(assumptions))
+        res = Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")\
+            .solve(self.encoding_data, self.measure, (assumptions, []), add_model)
+        from function.models import Status
+        assert res.status == Status.SOLVED
+
+        return res
+        # return self._fix(propagate(
+        #     self.solver, self.measure, self.encoding_data.max_literal, assumptions, add_model
+        # ))
+        # print("solve: " + str(assumptions))
+        # res = self._fix(solve(self.solver, self.measure, assumptions, add_model))
+        # return res
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return self._fix(propagate(

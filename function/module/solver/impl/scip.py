@@ -11,6 +11,7 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
     if not isinstance(encoding_data, PBSCIPData):
         raise TypeError('SCIP works only with PBSCIP encodings')
 
+
     model = Model(sourceModel=encoding_data.get_model(), origcopy=True, threadsafe=False)
 
     assert len(model.getVars()) == encoding_data.max_literal, "len(model.getVars()) != encoding_data.max_literal"
@@ -33,6 +34,7 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
     status = model.getStatus() == "infeasible"
     stats = {'time': model.getPresolvingTime()}
     value, status = measure.check_and_get(stats, status)
+
 
     return Report(stats['time'], value, status, None)
 
