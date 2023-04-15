@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('KvW_12_12.cnf')
+    cnf_file = data_path.to_file('PvS_9_4.cnf')
     logs_path = root_path.to_path('logs', 'pvs_4_7_comb')
     estimation = Combine(
         instance=Instance(
