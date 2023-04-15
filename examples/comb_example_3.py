@@ -1,22 +1,21 @@
 # function submodule imports
 # other imports
+
 from core.impl import Combine
 from executor.impl import ProcessExecutor
 from function.module.measure import SolvingTime
-from function.module.solver import pysat
 # instance module imports
-from function.module.solver.impl import MiniSatPB, Glucose4
+from function.module.solver.impl import Glucose4
 from instance.impl import Instance
 from instance.module.encoding import CNF
-from instance.module.encoding.impl.PB import PB
 from instance.module.variables import Indexes, make_backdoor
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
 
 if __name__ == '__main__':
-    # взвешенное среднее гармоническое:
+    # взешанным среднее гармоническое:
     str_backdoors = [
-        '101 939 943 1027 1081 1494 1649 2154 2587 2657 2899 7112',
+        '776 1189 1274 1325 1328 1346 1974 2107 2365 2940 2950 '
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -26,8 +25,8 @@ if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
     cnf_file = data_path.to_file('KvW_12_12.cnf')
-    logs_path = root_path.to_path('logs', 'pvs_4_7_comb')
-    estimation = Combine(
+    logs_path = root_path.to_path('logs', 'sgen_150_comb')
+    combine = Combine(
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
@@ -35,6 +34,7 @@ if __name__ == '__main__':
         solver=Glucose4(),
         logger=OptimizeLogger(logs_path),
         executor=ProcessExecutor(max_workers=1)
-    ).launch(*backdoors)
+    )
 
+    estimation = combine.launch(*backdoors)
     print(estimation)
