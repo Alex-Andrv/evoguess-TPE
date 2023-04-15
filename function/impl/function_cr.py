@@ -17,8 +17,15 @@ from function.module.solver import Solver
 from function.module.measure import Measure, Propagations
 from instance.module.variables import Backdoor
 
-def harmonic_mean(nums):
+def harmonic_mean(nums: list):
     return len(nums) / sum(1 / num for num in nums)
+
+def waight_harmonic_mean(nums: list):
+    nums.sort()
+    n = len(nums)
+    numerator = (1 + n) * n / 2
+    denominator = sum(coeff / num for num, coeff in zip(nums, range(n, 0, -1)))
+    return numerator / denominator
 
 def aggregate_results_mean(results: Results) -> Tuple[TimeMap, int, StatusMap, int, int]:
     all_times, all_values, all_statuses, full_ptime = {}, {Status.SOLVED: [], Status.RESOLVED: []}, {}, 0
@@ -30,7 +37,8 @@ def aggregate_results_mean(results: Results) -> Tuple[TimeMap, int, StatusMap, i
             all_values[status].extend(value)
         for status, count in statuses.items():
             all_statuses[status] = all_statuses.get(status, 0) + count
-    median = harmonic_mean(list(chain.from_iterable(list(all_values.values()))))
+    median = waight_harmonic_mean(list(chain.from_iterable(list(all_values.values()))))
+    # median = harmonic_mean(list(chain.from_iterable(list(all_values.values()))))
     return all_times, median, all_statuses, sum(all_statuses.values()), full_ptime
 
 def ch_worker_fn(args: WorkerArgs, payload: Payload) -> WorkerResult:
@@ -69,7 +77,7 @@ class ChainReaction(Function):
     def calculate(self, backdoor: Backdoor, results: Results) -> Estimation:
         times, median, statuses, count, ptime = aggregate_results_mean(results)
         power, time_sum = backdoor.power(), sum(times.values())
-
+        # print(median)
         value = math.sqrt(((backdoor.power() / (median + 1)) ** 2 + (1 - median / backdoor._length) ** 2) / 2)
 
         return {

@@ -130,9 +130,9 @@ class IncrPySAT(IncrSolver):
         # return self._fix(propagate(
         #     self.solver, self.measure, self.encoding_data.max_literal, assumptions, add_model
         # ))
-        # print("solve: " + str(assumptions))
-        # res = self._fix(solve(self.solver, self.measure, assumptions, add_model))
-        # return res
+        # # print("solve: " + str(assumptions))
+        # # res = self._fix(solve(self.solver, self.measure, assumptions, add_model))
+        # # return res
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return self._fix(propagate(
