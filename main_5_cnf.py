@@ -9,7 +9,7 @@ from core.module.sampling import Const
 from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
-from function.impl.function_cr import ChainReaction, quadratic_weight_harmonic_mean, exponent_weight_harmonic_mean
+from function.impl.function_cr import ChainReaction, quadratic_weight_harmonic_mean, harmonic_mean
 from function.module.measure import SolvingTime, Propagations
 from function.module.solver.impl import Glucose3, Minisat22
 from instance.impl import Instance
@@ -30,22 +30,22 @@ if __name__ == '__main__':
             variables=Interval(start=1, length=5088)
         ),
         executor=ProcessExecutor(max_workers=4),
-        sampling=Const(size=1024 * 4, split_into=1024),
+        sampling=Const(size=4 * 1024, split_into=1024),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
-        function=ChainReaction(
+        function=RhoFunction(
             measure=Propagations(),
             solver=Glucose3(),
-            mean_fun=exponent_weight_harmonic_mean
+            penalty_power=2**20
         ),
         algorithm=Elitism(
-            elites_count=9,
-            population_size=20,
+            elites_count=5,
+            population_size=15,
             mutation=Doer(),
             crossover=TwoPoint(),
             selection=Roulette(),
-            min_update_size=20
+            min_update_size=15
         ),
         comparator=MinValueMaxSize(),
         logger=OptimizeLogger(logs_path),

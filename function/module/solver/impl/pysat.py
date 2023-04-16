@@ -5,7 +5,7 @@ from pysat import solvers as pysat
 
 from ..solver import Report, Solver, IncrSolver
 
-from function.module.measure import Measure, Budget, EMPTY_BUDGET
+from function.module.measure import Measure, Budget, EMPTY_BUDGET, Propagations
 from instance.module.encoding import EncodingData, CNFData, CNFPData
 from instance.module.variables.vars import Assumptions, Constraints, Supplements
 
@@ -121,11 +121,16 @@ class IncrPySAT(IncrSolver):
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         from .. import Kissat
         print("solve: " + str(assumptions))
+        res = Glucose4().propagate(
+            self.encoding_data,
+            Propagations(), (assumptions, []), add_model
+        )
+        print("propagations: " + str(res.value))
         res = Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")\
             .solve(self.encoding_data, self.measure, (assumptions, []), add_model)
+        print("time " + str(res.time))
         from function.models import Status
         assert res.status == Status.SOLVED
-
         return res
         # return self._fix(propagate(
         #     self.solver, self.measure, self.encoding_data.max_literal, assumptions, add_model
