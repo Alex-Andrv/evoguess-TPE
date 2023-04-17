@@ -1,6 +1,7 @@
 # function submodule imports
 # other imports
-
+import sys
+sys.path.append('/path/to/directory')
 from core.impl import Combine
 from executor.impl import ProcessExecutor
 from function.module.measure import SolvingTime
@@ -13,7 +14,6 @@ from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
 
 if __name__ == '__main__':
-    # среднее гармоническое:
     str_backdoors = [
         '344 931 1860 1869',
         '7 366 470 598 931 1857 1929 2305 2639 2655'
