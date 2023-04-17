@@ -16,7 +16,7 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     # взвешенное среднее гармоническое:
     str_backdoors = [
-        '101 939 943 1027 1081 1494 1649 2154 2587 2657 2899 7112',
+        '1929 2224 2596 2598 2599 2607 2655 2923 3390 4060',
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('PvS_9_4.cnf')
+    cnf_file = data_path.to_file('KvW_12_12.cnf')
     logs_path = root_path.to_path('logs', 'pvs_4_7_comb')
     estimation = Combine(
         instance=Instance(
