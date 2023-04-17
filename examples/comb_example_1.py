@@ -15,7 +15,7 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     # среднее гармоническое:
     str_backdoors = [
-        '497 1079 1230 1361 1763 2507 2568 3313 3651 5753 7311'
+        '7 366 470 598 931 1857 1929 2305 2639 2655'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('PvS_9_4.cnf')
+    cnf_file = data_path.to_file('KvW_12_12.cnf')
     logs_path = root_path.to_path('logs', 'sgen_150_comb')
     combine = Combine(
         instance=Instance(

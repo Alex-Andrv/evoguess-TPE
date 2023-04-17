@@ -15,7 +15,8 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     # среднее гармоническое:
     str_backdoors = [
-        '1669 2007 2225 2245 2599 2617 2655 2720 2973 3418 3561'
+        '344 931 1860 1869',
+        '7 366 470 598 931 1857 1929 2305 2639 2655'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
