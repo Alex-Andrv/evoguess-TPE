@@ -11,7 +11,6 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
     if not isinstance(encoding_data, PBSCIPData):
         raise TypeError('SCIP works only with PBSCIP encodings')
 
-
     model = Model(sourceModel=encoding_data.get_model(), origcopy=True, threadsafe=False)
 
     assert len(model.getVars()) == encoding_data.max_literal, "len(model.getVars()) != encoding_data.max_literal"
@@ -31,11 +30,41 @@ def propagate(measure, encoding_data: EncodingData, assumptions):
     # evoguess: The status is ``True`` if conflict arisen
     # during propagation or all literals in formula assigned.
     # Otherwise, the status is ``False``.
+    assert model.getStatus() != "optimal"
     status = model.getStatus() == "infeasible"
     stats = {'time': model.getPresolvingTime()}
     value, status = measure.check_and_get(stats, status)
 
+    return Report(stats['time'], value, status, None)
 
+
+def solve(measure, encoding_data: EncodingData, assumptions):
+    if not isinstance(encoding_data, PBSCIPData):
+        raise TypeError('SCIP works only with PBSCIP encodings')
+
+    model = Model(sourceModel=encoding_data.get_model(), origcopy=True, threadsafe=False)
+
+    assert len(model.getVars()) == encoding_data.max_literal, "len(model.getVars()) != encoding_data.max_literal"
+
+    for var_assumption in assumptions:
+        var_index = abs(var_assumption) - 1
+        assert var_index >= 0, "var_index may be 0"
+        variable = model.getVars()[var_index]
+        assert variable.name == str(var_index + 1), "variable.name != str(var_index + 1)"
+        if var_assumption > 0:
+            model.addCons(variable == 1)
+        else:
+            model.addCons(variable == 0)
+
+    model.optimize()
+
+    # evoguess: The status is ``True`` if conflict arisen
+    # during propagation or all literals in formula assigned.
+    # Otherwise, the status is ``False``.
+    assert model.getStatus() == "infeasible"
+    status = model.getStatus() == "infeasible"
+    stats = {'time': model.getPresolvingTime()}
+    value, status = measure.check_and_get(stats, status)
     return Report(stats['time'], value, status, None)
 
 
@@ -56,7 +85,7 @@ class IncrScip(IncrSolver):
         pass
 
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
-        return propagate(self.measure, self.encoding_data, assumptions)
+        return solve(self.measure, self.encoding_data, assumptions)
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return propagate(self.measure, self.encoding_data, assumptions)
@@ -64,6 +93,10 @@ class IncrScip(IncrSolver):
 
 class Scip(Solver):
     slug = 'solver:scip'
+
+    def solve(self, encoding_data: EncodingData, measure: Measure,
+              supplements: Supplements, add_model: bool) -> Report:
+        raise Exception
 
     def propagate(self, encoding_data: EncodingData, measure: Measure,
                   supplements: Supplements, add_model: bool) -> Report:

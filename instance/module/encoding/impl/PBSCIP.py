@@ -39,7 +39,7 @@ class PBSCIPData(PBData):
 
         model.setPresolve(PY_SCIP_PARAMSETTING.AGGRESSIVE)
         model.presolve()
-        model.setPresolve(PY_SCIP_PARAMSETTING.FAST)
+        model.setPresolve(PY_SCIP_PARAMSETTING.DEFAULT)
         assert len(model.getVars()) == max_lit, "presolver shrink vars"
         self.model = model
 
