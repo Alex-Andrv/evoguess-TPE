@@ -15,8 +15,7 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '565 2647 4038 4042 5059',
-        '1640 1858 1884 2063 2647 3121 3666 3693 4053 4438'
+        '2051 3063 3335 3348 3352 3397 3943 6048 6075 8933'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
