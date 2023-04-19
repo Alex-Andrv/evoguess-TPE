@@ -62,7 +62,10 @@ def aggregate_results_mean(results: Results, mean_fun) -> Tuple[TimeMap, int, St
     # median = quadratic_weight_harmonic_mean(list(chain.from_iterable(list(all_values.values()))))
     # median = exponent_weight_harmonic_mean(list(chain.from_iterable(list(all_values.values()))))
     # median = weight_harmonic_mean_v_2(list(chain.from_iterable(list(all_values.values()))))
-    median = mean_fun(list(chain.from_iterable(list(all_values.values()))))
+    if sum(list(chain.from_iterable(list(all_values.values())))) > 0:
+        median = mean_fun(list(chain.from_iterable(list(all_values.values()))))
+    else:
+        median = 0
     return all_times, median, all_statuses, sum(all_statuses.values()), full_ptime
 
 def ch_worker_fn(args: WorkerArgs, payload: Payload) -> WorkerResult:

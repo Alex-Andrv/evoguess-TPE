@@ -21,13 +21,13 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('BvP_10_4.cnf')
+    cnf_file = data_path.to_file('snake_in_the_box_plain_9_191.cnf')
 
-    logs_path = root_path.to_path('logs', 'BvP_10_4')
+    logs_path = root_path.to_path('logs', 'snake_in_the_box_plain_9_191')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=9513)
+            variables=Interval(start=1, length=1729)
         ),
         executor=ProcessExecutor(max_workers=4),
         sampling=Const(size=4 * 1024, split_into=1024),
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         function=RhoFunction(
             measure=Propagations(),
             solver=Glucose3(),
-            penalty_power=2**20
+            penalty_power=2**50
         ),
         algorithm=Elitism(
             elites_count=5,
