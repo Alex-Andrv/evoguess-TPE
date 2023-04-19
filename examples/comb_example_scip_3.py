@@ -1,11 +1,11 @@
 # function submodule imports
 # other imports
 import sys
-
+sys.path.append('/nfs/home/aandreev/evoguess-TPE')
 from function.module.solver.impl.scip import Scip
 from instance.module.encoding.impl.PBSCIP import PBSCIP
 
-sys.path.append('/nfs/home/aandreev/evoguess-TPE')
+
 from core.impl import Combine
 from executor.impl import ProcessExecutor
 from function.module.measure import SolvingTime, Conflicts
