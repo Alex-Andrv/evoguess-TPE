@@ -4,7 +4,7 @@ import sys
 sys.path.append('/nfs/home/aandreev/evoguess-TPE')
 from core.impl import Combine
 from executor.impl import ProcessExecutor
-from function.module.measure import SolvingTime, Conflicts
+from function.module.measure import Conflicts
 # instance module imports
 from function.module.solver.impl import Glucose4
 from instance.impl import Instance
@@ -15,7 +15,8 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '339 2134 5754 7381 8207'
+        '33 1108 2497 3520 7087',
+        '715 912 968 1129 1161 1263 1360 1806 2576 5562 6549 8070'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
