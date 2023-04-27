@@ -15,7 +15,7 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '493 513 3930 5394 5499'
+        '339 2134 5754 7381 8207'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('PvS_8_4.cnf')
+    cnf_file = data_path.to_file('PvS_9_4.cnf')
     logs_path = root_path.to_path('logs', 'sgen_150_comb')
     combine = Combine(
         instance=Instance(

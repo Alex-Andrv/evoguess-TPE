@@ -1,3 +1,4 @@
+import py_minisat_pb
 from algorithm.impl import Elitism
 from algorithm.module.crossover import TwoPoint
 from algorithm.module.mutation import Doer
@@ -9,7 +10,6 @@ from core.module.sampling import Const
 from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
 from function.impl import RhoFunction
-from function.impl.function_cr import ChainReaction, quadratic_weight_harmonic_mean, harmonic_mean
 from function.module.measure import SolvingTime, Propagations
 from function.module.solver.impl import Glucose3, Minisat22
 from instance.impl import Instance
@@ -21,23 +21,23 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('snake_in_the_box_plain_9_191.cnf')
+    cnf_file = data_path.to_file('BvS_9_4.cnf')
 
-    logs_path = root_path.to_path('logs', 'snake_in_the_box_plain_9_191')
+    logs_path = root_path.to_path('logs', 'BvS_9_4')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=1729)
+            variables=Interval(start=1, length=6317)
         ),
-        executor=ProcessExecutor(max_workers=4),
-        sampling=Const(size=1024 * 4, split_into=1024),
+        executor=ProcessExecutor(max_workers=1),
+        sampling=Const(size=1024, split_into=256),
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
-        function=ChainReaction(
+        function=RhoFunction(
+            penalty_power=2 ** 10,
             measure=Propagations(),
-            solver=Glucose3(),
-            mean_fun=harmonic_mean
+            solver=Glucose3()
         ),
         algorithm=Elitism(
             elites_count=9,
