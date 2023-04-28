@@ -21,13 +21,13 @@ from typings.work_path import WorkPath
 if __name__ == '__main__':
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('BvS_9_4.cnf')
+    cnf_file = data_path.to_file('cvd.cnf')
 
-    logs_path = root_path.to_path('logs', 'BvS_9_4')
+    logs_path = root_path.to_path('logs', 'cvd')
     solution = Optimize(
         space=SearchSet(
             by_mask=[],
-            variables=Interval(start=1, length=6317)
+            variables=Interval(start=1, length=2982)
         ),
         executor=ProcessExecutor(max_workers=1),
         sampling=Const(size=1024, split_into=256),
