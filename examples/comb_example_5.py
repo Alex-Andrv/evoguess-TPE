@@ -1,5 +1,6 @@
 # function submodule imports
 # other imports
+import py_minisat_pb
 import sys
 sys.path.append('/nfs/home/aandreev/evoguess-TPE')
 from core.impl import Combine
@@ -15,8 +16,8 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '33 1108 2497 3520 7087',
-        '101 939 966 1052 1625 2325 2506 2816 4382 5649 6368'
+        '544 1336 2325 2504 2534 4529 5676 5838 6412 6576 8794',
+        '497 1143 1502 1530 1975 2495 5555 5657 6576 7311 8596'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
