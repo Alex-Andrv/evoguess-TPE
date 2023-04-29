@@ -15,8 +15,8 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '43 1530',
-        '5 67 342 618 669 738 1823 2750 2879 2986'
+        '1 1721 1856 3695',
+        '2522 2649 3446 3555 3568 3704 4062 4265 4442 4443'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -25,8 +25,8 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('dvw.cnf')
-    logs_path = root_path.to_path('logs', 'sgen_150_comb')
+    cnf_file = data_path.to_file('cvk.cnf')
+    logs_path = root_path.to_path('logs', 'cvk')
     combine = Combine(
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
