@@ -1,6 +1,5 @@
 # function submodule imports
 # other imports
-import py_minisat_pb
 import sys
 sys.path.append('/nfs/home/aandreev/evoguess-TPE')
 from core.impl import Combine
