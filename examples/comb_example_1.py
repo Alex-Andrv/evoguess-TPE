@@ -6,7 +6,7 @@ from core.impl import Combine
 from executor.impl import ProcessExecutor
 from function.module.measure import SolvingTime, Conflicts
 # instance module imports
-from function.module.solver.impl import Glucose4
+from function.module.solver.impl import Glucose4, Minisat22
 from instance.impl import Instance
 from instance.module.encoding import CNF
 from instance.module.variables import Indexes, make_backdoor
@@ -15,7 +15,8 @@ from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '8 10 16 31 181 497 723 1001 2982'
+        '366 463 1871',
+        '5 18 21 31 169 424 783 1078 2982'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -31,7 +32,7 @@ if __name__ == '__main__':
             encoding=CNF(from_file=cnf_file)
         ),
         measure=Conflicts(),
-        solver=Glucose4(),
+        solver=Minisat22(),
         logger=OptimizeLogger(logs_path),
         executor=ProcessExecutor(max_workers=1)
     )
