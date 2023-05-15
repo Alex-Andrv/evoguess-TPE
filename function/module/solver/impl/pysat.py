@@ -119,25 +119,25 @@ class IncrPySAT(IncrSolver):
             self.solver = None
 
     def solve(self, assumptions: Assumptions, add_model: bool = True) -> Report:
-        from .. import Kissat
-        print("solve: " + str(assumptions))
-        res = Glucose4().propagate(
-            self.encoding_data,
-            Propagations(), (assumptions, []), add_model
-        )
-        print("propagations: " + str(res.value))
-        res = Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")\
-            .solve(self.encoding_data, self.measure, (assumptions, []), add_model)
-        print("time " + str(res.time))
-        from function.models import Status
-        assert res.status == Status.SOLVED
-        return res
+        # from .. import Kissat
+        # print("solve: " + str(assumptions))
+        # res = Glucose4().propagate(
+        #     self.encoding_data,
+        #     Propagations(), (assumptions, []), add_model
+        # )
+        # print("propagations: " + str(res.value))
+        # res = Kissat("/Users/alexanderandreev/CLionProjects/kissat/build/kissat")\
+        #     .solve(self.encoding_data, self.measure, (assumptions, []), add_model)
+        # print("time " + str(res.time))
+        # from function.models import Status
+        # assert res.status == Status.SOLVED
+        # return res
         # return self._fix(propagate(
         #     self.solver, self.measure, self.encoding_data.max_literal, assumptions, add_model
         # ))
-        # # print("solve: " + str(assumptions))
-        # # res = self._fix(solve(self.solver, self.measure, assumptions, add_model))
-        # # return res
+        # print("solve: " + str(assumptions))
+        res = self._fix(solve(self.solver, self.measure, assumptions, add_model))
+        return res
 
     def propagate(self, assumptions: Assumptions, add_model: bool = True) -> Report:
         return self._fix(propagate(
