@@ -8,17 +8,19 @@ from instance.module.encoding.impl.PBSCIP import PBSCIP
 
 from core.impl import Combine
 from executor.impl import ProcessExecutor
-from function.module.measure import SolvingTime
+from function.module.measure import SolvingTime, Conflicts
 # instance module imports
+from function.module.solver.impl import Glucose4
 from instance.impl import Instance
+from instance.module.encoding import CNF
 from instance.module.variables import Indexes, make_backdoor
 from output.impl import OptimizeLogger
 from typings.work_path import WorkPath
 
 if __name__ == '__main__':
     str_backdoors = [
-        '366 463 1871',
-        '5 18 21 31 169 424 783 1078 2982'
+        '43 1530',
+        '5 67 342 618 669 738 1823 2750 2879 2986'
     ]
     backdoors = [
         make_backdoor(Indexes(from_string=str_vars))
@@ -27,7 +29,7 @@ if __name__ == '__main__':
 
     root_path = WorkPath('examples')
     data_path = root_path.to_path('data')
-    cnf_file = data_path.to_file('cvd.opb')
+    cnf_file = data_path.to_file('dvw.opb')
     logs_path = root_path.to_path('logs', 'sgen_150_comb')
     combine = Combine(
         instance=Instance(
