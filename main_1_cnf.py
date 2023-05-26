@@ -8,6 +8,7 @@ from core.module.limitation import WallTime
 from core.module.sampling import Const
 from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
+from function.impl import RhoFunction
 from function.module.measure import SolvingTime, Propagations
 from function.module.solver.impl import Glucose3, Minisat22
 from instance.impl import Instance
@@ -32,7 +33,8 @@ if __name__ == '__main__':
         instance=Instance(
             encoding=CNF(from_file=cnf_file)
         ),
-        function=EgorFunction(
+        function=RhoFunction(
+            penalty_power=2 ** 10,
             measure=Propagations(),
             solver=Glucose3()
         ),
