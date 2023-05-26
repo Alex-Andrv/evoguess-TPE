@@ -8,7 +8,6 @@ from core.module.limitation import WallTime
 from core.module.sampling import Const
 from core.module.space import SearchSet
 from executor.impl import ProcessExecutor
-from function.impl.function_egor import EgorFunction
 from function.module.measure import SolvingTime, Propagations
 from function.module.solver.impl import Glucose3, Minisat22
 from instance.impl import Instance
