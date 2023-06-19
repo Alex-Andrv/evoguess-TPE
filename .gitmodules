@@ -1,0 +1,9 @@
+[submodule "function/module/solver/impl/minisat_with_pb"]
+	path = function/module/solver/impl/minisat_with_pb
+	url = https://github.com/Alex-Andrv/minisat_with_pb.git
+[submodule "function/module/solver/impl/minisat_pb/minisat_with_pb"]
+	path = function/module/solver/impl/minisat_pb/minisat_with_pb
+	url = https://github.com/Alex-Andrv/minisat_with_pb.git
+[submodule "function/module/solver/impl/minisat_pb/--force"]
+	path = function/module/solver/impl/minisat_pb/--force
+	url = https://github.com/Alex-Andrv/minisat_with_pb.git
